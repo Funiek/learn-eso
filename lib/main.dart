@@ -12,57 +12,76 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LearnESO',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepOrange,
+          primary: Colors.grey,
+          secondary: Colors.deepOrange,
+        ),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Learn English with ESO'),
+      home: const MainMenu(title: 'Learn English with ESO'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MainMenu extends StatefulWidget {
+  const MainMenu({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainMenu> createState() => _MainMenuState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.white,
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+        child: ListView(
+          padding: const EdgeInsets.all(24),
+          
+          children: const <MenuButton>[
+            MenuButton(inlineText: 'Przetłumacz'),
+            MenuButton(inlineText: 'Lista słów'),
+            MenuButton(inlineText: 'Wyczyść dane (potem Opcje)'),
+            MenuButton(inlineText: 'Zamknij'),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  const MenuButton({super.key, required this.inlineText});
+
+  final String inlineText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary,
+          width: 4,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(30),
+        ),
+      ),
+      child: TextButton(
+        onPressed: () {},
+        child: Text(
+          inlineText,
+          style: TextStyle(color: Theme.of(context).colorScheme.surface),
+        ),
       ),
     );
   }
