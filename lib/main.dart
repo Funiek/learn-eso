@@ -45,11 +45,19 @@ class _MainMenuState extends State<MainMenu> {
       body: Center(
         child: ListView(
           padding: const EdgeInsets.all(24),
-          
-          children: const <MenuButton>[
+          children: const [
             MenuButton(inlineText: 'Przetłumacz'),
+            SizedBox(
+              height: 10,
+            ),
             MenuButton(inlineText: 'Lista słów'),
+            SizedBox(
+              height: 10,
+            ),
             MenuButton(inlineText: 'Wyczyść dane (potem Opcje)'),
+            SizedBox(
+              height: 10,
+            ),
             MenuButton(inlineText: 'Zamknij'),
           ],
         ),
