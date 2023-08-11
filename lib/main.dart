@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import './word.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,7 +75,7 @@ class MainMenu extends StatelessWidget {
       body: Center(
         child: ListView(
           padding: const EdgeInsets.all(24),
-          children: [
+          children: <Widget>[
             MenuButton(
                 inlineText: 'Przetłumacz',
                 viewName: 'Translator',
@@ -145,14 +146,66 @@ class MenuButton extends StatelessWidget {
   }
 }
 
-class TranslatorView extends StatelessWidget {
+class TranslatorView extends StatefulWidget {
   const TranslatorView({super.key});
+
+  @override
+  State<TranslatorView> createState() => _TranslatorViewState();
+}
+
+class _TranslatorViewState extends State<TranslatorView> {
+  final TextEditingController textController = TextEditingController();
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.white,
         title: const Text('Translator'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8, top:16, right: 8, bottom: 4),
+            child: TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Wpisz słowo do przetłumaczenia',
+              ),
+              controller: textController,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: Text(textController.text),
+                    );
+                  },
+                );
+              },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.secondary)),
+              child: Text(
+                'Tłumacz',
+                style: TextStyle(color: Theme.of(context).colorScheme.surface),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
