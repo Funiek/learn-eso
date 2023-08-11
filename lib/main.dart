@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './word.dart';
@@ -174,7 +175,8 @@ class _TranslatorViewState extends State<TranslatorView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 8, top:16, right: 8, bottom: 4),
+            padding:
+                const EdgeInsets.only(left: 8, top: 16, right: 8, bottom: 4),
             child: TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -187,11 +189,17 @@ class _TranslatorViewState extends State<TranslatorView> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton(
               onPressed: () {
+                Word word = Word(textController.text, 'b', 'abc');
+                String str = jsonEncode(word.toJson());
+                print(str);
+                final parsed = jsonDecode(str);
+                Word decodedWord = Word.fromJson(parsed);
+
                 showDialog(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      content: Text(textController.text),
+                      content: Text(decodedWord.original),
                     );
                   },
                 );
