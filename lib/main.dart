@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String? _selectedView;
+
+  setSelectedView(selectedView) {
+    setState(() {
+      _selectedView = selectedView;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,46 +33,73 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MainMenu(title: 'Learn English with ESO'),
+      // home: const MainMenu(title: 'Learn English with ESO'),
+      home: Navigator(
+        pages: [
+          MaterialPage(
+              child: MainMenu(
+            title: 'Learn English with ESO',
+            setSelectedView: setSelectedView,
+          )),
+          if (_selectedView == 'Translator')
+            const MaterialPage(child: TranslatorView())
+        ],
+        onPopPage: (route, result) {
+          setSelectedView(null);
+          return route.didPop(result);
+        },
+      ),
     );
   }
 }
 
-class MainMenu extends StatefulWidget {
-  const MainMenu({super.key, required this.title});
+class MainMenu extends StatelessWidget {
+  const MainMenu({
+    super.key,
+    required this.title,
+    required this.setSelectedView,
+  });
 
   final String title;
+  final Function setSelectedView;
 
-  @override
-  State<MainMenu> createState() => _MainMenuState();
-}
-
-class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         foregroundColor: Colors.white,
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: ListView(
           padding: const EdgeInsets.all(24),
-          children: const [
-            MenuButton(inlineText: 'Przetłumacz'),
-            SizedBox(
+          children: [
+            MenuButton(
+                inlineText: 'Przetłumacz',
+                viewName: 'Translator',
+                func: setSelectedView),
+            const SizedBox(
               height: 10,
             ),
-            MenuButton(inlineText: 'Lista słów'),
-            SizedBox(
+            MenuButton(
+                inlineText: 'Lista słów',
+                viewName: 'WordsList',
+                func: setSelectedView),
+            const SizedBox(
               height: 10,
             ),
-            MenuButton(inlineText: 'Wyczyść dane (potem Opcje)'),
-            SizedBox(
+            MenuButton(
+                inlineText: 'Wyczyść dane (potem Opcje)',
+                viewName: 'ClearData',
+                func: setSelectedView),
+            const SizedBox(
               height: 10,
             ),
-            MenuButton(inlineText: 'Zamknij'),
+            MenuButton(
+              inlineText: 'Zamknij',
+              func: () => SystemNavigator.pop(),
+            ),
           ],
         ),
       ),
@@ -67,9 +108,12 @@ class _MainMenuState extends State<MainMenu> {
 }
 
 class MenuButton extends StatelessWidget {
-  const MenuButton({super.key, required this.inlineText});
+  const MenuButton(
+      {super.key, required this.inlineText, this.viewName, required this.func});
 
   final String inlineText;
+  final String? viewName;
+  final Function func;
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +129,30 @@ class MenuButton extends StatelessWidget {
         ),
       ),
       child: TextButton(
-        onPressed: () {},
         child: Text(
           inlineText,
           style: TextStyle(color: Theme.of(context).colorScheme.surface),
         ),
+        onPressed: () {
+          if (viewName != null) {
+            func(viewName);
+          } else {
+            func();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class TranslatorView extends StatelessWidget {
+  const TranslatorView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Translator'),
       ),
     );
   }
