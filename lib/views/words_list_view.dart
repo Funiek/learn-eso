@@ -46,7 +46,7 @@ class _WordsListViewState extends State<WordsListView> {
                           .map(
                             (e) => Center(
                               child: ListTile(
-                                title: Text(e.original),
+                                title: Text('${e.original} -> ${e.translated}'),
                               ),
                             ),
                           )

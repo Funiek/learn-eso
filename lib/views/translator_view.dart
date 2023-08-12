@@ -12,6 +12,8 @@ class TranslatorView extends StatefulWidget {
 
 class _TranslatorViewState extends State<TranslatorView> {
   final TextEditingController textController = TextEditingController();
+  final GoogleTranslatorController translatorController =
+      GoogleTranslatorController();
 
   @override
   void dispose() {
@@ -45,8 +47,13 @@ class _TranslatorViewState extends State<TranslatorView> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton(
               onPressed: () async {
-                Word word =
-                    Word(original: textController.text, translated: 'abc');
+                String translatedWord = await translatorController
+                    .translateText(textController.text);
+
+                Word word = Word(
+                  original: textController.text,
+                  translated: translatedWord,
+                );
                 await DatabaseHeloper.instance.add(word);
 
                 setState(() {

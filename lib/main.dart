@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   String? _selectedView;
   final String googleTranslationApiKey =
       dotenv.env['GOOGLE_TRANSLATION_API_KEY'] ?? '';
-
+  
   setSelectedView(selectedView) {
     setState(() {
       _selectedView = selectedView;
