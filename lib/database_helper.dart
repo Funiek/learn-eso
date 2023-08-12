@@ -60,4 +60,9 @@ class DatabaseHeloper {
     Database db = await instance.database;
     return await db.delete('words');
   }
+
+  Future<int> update(Word word) async {
+    Database db = await instance.database;
+    return await db.update('words', word.toJson(), where: 'id = ?', whereArgs: [word.id]);
+  }
 }
