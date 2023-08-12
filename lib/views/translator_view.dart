@@ -12,7 +12,6 @@ class TranslatorView extends StatefulWidget {
 
 class _TranslatorViewState extends State<TranslatorView> {
   final TextEditingController textController = TextEditingController();
-  final String apiKey = 'AIzaSyD-TZg6jYXvz60dvxkAQ8YDnaXZG5lDbo8';
 
   @override
   void dispose() {

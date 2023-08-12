@@ -21,6 +21,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? _selectedView;
+  final String googleTranslationApiKey =
+      dotenv.env['GOOGLE_TRANSLATION_API_KEY'] ?? '';
 
   setSelectedView(selectedView) {
     setState(() {
@@ -30,34 +32,37 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    print(dotenv.env['GOOGLE_TRANSLATION_API_KEY']);
-
-    return MaterialApp(
-      title: 'LearnESO',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepOrange,
-          primary: Colors.grey,
-          secondary: Colors.deepOrange,
+    return GoogleTranslatorInit(
+      googleTranslationApiKey,
+      translateFrom: const Locale('en'),
+      translateTo: const Locale('pl'),
+      builder: () => MaterialApp(
+        title: 'LearnESO',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepOrange,
+            primary: Colors.grey,
+            secondary: Colors.deepOrange,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      home: Navigator(
-        pages: [
-          MaterialPage(
-              child: MainMenu(
-            title: 'Learn English with ESO',
-            setSelectedView: setSelectedView,
-          )),
-          if (_selectedView == 'Translator')
-            const MaterialPage(child: TranslatorView())
-          else if (_selectedView == 'WordsList')
-            const MaterialPage(child: WordsListView())
-        ],
-        onPopPage: (route, result) {
-          setSelectedView(null);
-          return route.didPop(result);
-        },
+        home: Navigator(
+          pages: [
+            MaterialPage(
+                child: MainMenu(
+              title: 'Learn English with ESO',
+              setSelectedView: setSelectedView,
+            )),
+            if (_selectedView == 'Translator')
+              const MaterialPage(child: TranslatorView())
+            else if (_selectedView == 'WordsList')
+              const MaterialPage(child: WordsListView())
+          ],
+          onPopPage: (route, result) {
+            setSelectedView(null);
+            return route.didPop(result);
+          },
+        ),
       ),
     );
   }
