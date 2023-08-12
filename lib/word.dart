@@ -1,9 +1,10 @@
 class Word {
+  int? _id;
   String _original;
   String _translated;
   String? _description;
 
-  Word(this._original, this._translated, this._description);
+  Word(this._id, this._original, this._translated, this._description);
 
   String get original => _original;
 
@@ -25,11 +26,13 @@ class Word {
 
   Map<String, dynamic> toJson() {
     return {
-      'original': original,
-      'translated': translated,
-      'description': description,
+      'id': _id,
+      'original': _original,
+      'translated': _translated,
+      'description': _description,
     };
   }
 
-  factory Word.fromJson(Map<String, dynamic> json) => Word(json['original'], json['translated'], json['description']);
+  factory Word.fromJson(Map<String, dynamic> json) =>
+      Word(json['id'], json['original'], json['translated'], json['description']);
 }

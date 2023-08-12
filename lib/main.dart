@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import './word.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -16,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? _selectedView;
+  //final prefs = await SharedPreferences.getInstance();
 
   setSelectedView(selectedView) {
     setState(() {
@@ -189,7 +191,7 @@ class _TranslatorViewState extends State<TranslatorView> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton(
               onPressed: () {
-                Word word = Word(textController.text, 'b', 'abc');
+                Word word = Word(1, textController.text, 'b', 'abc');
                 String str = jsonEncode(word.toJson());
                 print(str);
                 final parsed = jsonDecode(str);
