@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learneso/database_helper.dart';
@@ -97,9 +96,9 @@ class MainMenu extends StatelessWidget {
               height: 10,
             ),
             MenuButton(
-                inlineText: 'Wyczyść dane (potem Opcje)',
-                viewName: 'ClearData',
-                func: setSelectedView),
+              inlineText: 'Wyczyść dane (potem Opcje)',
+              func: () => DatabaseHeloper.instance.removeAll(),
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -193,21 +192,14 @@ class _TranslatorViewState extends State<TranslatorView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton(
-              onPressed: () {
-                Word word = Word(1, textController.text, 'b', 'abc');
-                String str = jsonEncode(word.toJson());
-                print(str);
-                final parsed = jsonDecode(str);
-                Word decodedWord = Word.fromJson(parsed);
+              onPressed: () async {
+                Word word =
+                    Word(original: textController.text, translated: 'abc');
+                await DatabaseHeloper.instance.add(word);
 
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Text(decodedWord.original),
-                    );
-                  },
-                );
+                setState(() {
+                  textController.clear();
+                });
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(

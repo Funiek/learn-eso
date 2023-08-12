@@ -45,4 +45,19 @@ class DatabaseHeloper {
 
     return wordList;
   }
+
+  Future<int> add(Word word) async {
+    Database db = await instance.database;
+    return await db.insert('words', word.toJson());
+  }
+
+  Future<int> remove(int id) async {
+    Database db = await instance.database;
+    return await db.delete('words', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> removeAll() async {
+    Database db = await instance.database;
+    return await db.delete('words');
+  }
 }
