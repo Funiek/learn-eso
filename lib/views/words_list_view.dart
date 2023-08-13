@@ -3,7 +3,9 @@ import 'package:learneso/database_helper.dart';
 import 'package:learneso/word.dart';
 
 class WordsListView extends StatefulWidget {
-  const WordsListView({super.key});
+  const WordsListView({super.key, required this.setSelectedView});
+
+  final Function setSelectedView;
 
   @override
   State<WordsListView> createState() => _WordsListViewState();
@@ -42,17 +44,22 @@ class _WordsListViewState extends State<WordsListView> {
                       child: Text('Brak fiszek'),
                     )
                   : ListView(
-                      children: snapshot.data!
+                      children: snapshot.data!.reversed
                           .map(
                             (e) => Center(
                               child: ListTile(
-                                title: Text('${e.original} -> ${e.translated}'),
+                                title: Text('${e.original} -> ${e.translated}'), //TODO: DELETE BUTTON
                               ),
                             ),
                           )
                           .toList(),
                     );
             }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => widget.setSelectedView('Translator'),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: const Icon(Icons.translate),
       ),
     );
   }

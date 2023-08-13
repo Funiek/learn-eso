@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   String? _selectedView;
   final String googleTranslationApiKey =
       dotenv.env['GOOGLE_TRANSLATION_API_KEY'] ?? '';
-  
+
   setSelectedView(selectedView) {
     setState(() {
       _selectedView = selectedView;
@@ -49,14 +49,19 @@ class _MyAppState extends State<MyApp> {
         home: Navigator(
           pages: [
             MaterialPage(
-                child: MainMenu(
-              title: 'Learn English with ESO',
-              setSelectedView: setSelectedView,
-            )),
+              child: MainMenu(
+                title: 'Learn English with ESO',
+                setSelectedView: setSelectedView,
+              ),
+            ),
             if (_selectedView == 'Translator')
-              const MaterialPage(child: TranslatorView())
+              MaterialPage(
+                child: TranslatorView(setSelectedView: setSelectedView),
+              )
             else if (_selectedView == 'WordsList')
-              const MaterialPage(child: WordsListView())
+              MaterialPage(
+                child: WordsListView(setSelectedView: setSelectedView),
+              )
           ],
           onPopPage: (route, result) {
             setSelectedView(null);
