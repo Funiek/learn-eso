@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learneso/database_helper.dart';
+import 'package:learneso/views/learn_words_view.dart';
 import 'views/translator_view.dart';
 import 'views/words_list_view.dart';
 import 'package:google_translator/google_translator.dart';
@@ -62,6 +63,10 @@ class _MyAppState extends State<MyApp> {
               MaterialPage(
                 child: WordsListView(setSelectedView: setSelectedView),
               )
+            else if (_selectedView == 'LearnWords')
+              const MaterialPage(
+                child: LearnWordsView(),
+              )
           ],
           onPopPage: (route, result) {
             setSelectedView(null);
@@ -105,6 +110,13 @@ class MainMenu extends StatelessWidget {
             MenuButton(
                 inlineText: 'Lista słów',
                 viewName: 'WordsList',
+                func: setSelectedView),
+            const SizedBox(
+              height: 10,
+            ),
+            MenuButton(
+                inlineText: 'Ucz się słówek',
+                viewName: 'LearnWords',
                 func: setSelectedView),
             const SizedBox(
               height: 10,
