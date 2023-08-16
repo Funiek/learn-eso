@@ -30,7 +30,7 @@ class _WordsListViewState extends State<WordsListView> {
       ),
       body: Center(
         child: FutureBuilder<List<Word>>(
-            future: DatabaseHeloper.instance.getWords(),
+            future: DatabaseHelper.instance.getWords(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Word>> snapshot) {
               if (!snapshot.hasData) {
@@ -48,7 +48,14 @@ class _WordsListViewState extends State<WordsListView> {
                           .map(
                             (e) => Center(
                               child: ListTile(
-                                title: Text('${e.original} -> ${e.translated}'), //TODO: DELETE BUTTON
+                                title: Text(
+                                    '${e.original} -> ${e.translated}'),
+                                trailing: IconButton(
+                                  onPressed: () => setState(() {
+                                    DatabaseHelper.instance.remove(e.id ?? 0);
+                                  }),
+                                  icon: const Icon(Icons.remove_circle),
+                                ),
                               ),
                             ),
                           )

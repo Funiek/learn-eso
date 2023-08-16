@@ -67,7 +67,7 @@ class _TranslatorViewState extends State<TranslatorView> {
                   original: textController.text,
                   translated: translatedWord,
                 );
-                await DatabaseHeloper.instance.add(word);
+                await DatabaseHelper.instance.add(word);
 
                 setState(() {
                   textController.clear();

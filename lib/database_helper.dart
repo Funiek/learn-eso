@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DatabaseHeloper {
-  DatabaseHeloper._privateConstructor();
-  static final DatabaseHeloper instance = DatabaseHeloper._privateConstructor();
+class DatabaseHelper {
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   static Database? _database;
   Future<Database> get database async => _database ??= await _initDatabase();

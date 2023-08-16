@@ -123,7 +123,7 @@ class MainMenu extends StatelessWidget {
             ),
             MenuButton(
               inlineText: 'Wyczyść dane (potem Opcje)',
-              func: () => DatabaseHeloper.instance.removeAll(),
+              func: () => DatabaseHelper.instance.removeAll(),
             ),
             const SizedBox(
               height: 10,
