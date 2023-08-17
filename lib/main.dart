@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:learneso/database_helper.dart';
+import 'package:learneso/helpers/database_helper.dart';
 import 'package:learneso/views/learn_words_view.dart';
 import 'views/translator_view.dart';
 import 'views/words_list_view.dart';

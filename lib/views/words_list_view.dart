@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learneso/database_helper.dart';
+import 'package:learneso/helpers/database_helper.dart';
 import 'package:learneso/word.dart';
 
 class WordsListView extends StatefulWidget {

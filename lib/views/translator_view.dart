@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learneso/database_helper.dart';
+import 'package:learneso/helpers/database_helper.dart';
 import 'package:learneso/word.dart';
 import 'package:google_translator/google_translator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
