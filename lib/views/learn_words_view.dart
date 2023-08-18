@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LearnWordsView extends StatefulWidget {
-  const LearnWordsView({super.key});
+  const LearnWordsView({
+    super.key,
+    required this.setSelectedView,
+  });
+
+  final Function setSelectedView;
 
   @override
   State<LearnWordsView> createState() => _LearnWordsViewState();

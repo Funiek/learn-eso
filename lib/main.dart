@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:learneso/helpers/database_helper.dart';
+import 'views/options_view.dart';
 import 'package:learneso/views/learn_words_view.dart';
 import 'views/translator_view.dart';
 import 'views/words_list_view.dart';
 import 'package:google_translator/google_translator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'menu_button.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -64,8 +65,12 @@ class _MyAppState extends State<MyApp> {
                 child: WordsListView(setSelectedView: setSelectedView),
               )
             else if (_selectedView == 'LearnWords')
-              const MaterialPage(
-                child: LearnWordsView(),
+              MaterialPage(
+                child: LearnWordsView(setSelectedView: setSelectedView),
+              )
+            else if (_selectedView == 'Options')
+              MaterialPage(
+                child: OptionsView(setSelectedView: setSelectedView),
               )
           ],
           onPopPage: (route, result) {
@@ -101,29 +106,33 @@ class MainMenu extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           children: <Widget>[
             MenuButton(
-                inlineText: 'Przetłumacz',
-                viewName: 'Translator',
-                func: setSelectedView),
+              inlineText: 'Przetłumacz',
+              viewName: 'Translator',
+              func: setSelectedView,
+            ),
             const SizedBox(
               height: 10,
             ),
             MenuButton(
-                inlineText: 'Lista słów',
-                viewName: 'WordsList',
-                func: setSelectedView),
+              inlineText: 'Lista słów',
+              viewName: 'WordsList',
+              func: setSelectedView,
+            ),
             const SizedBox(
               height: 10,
             ),
             MenuButton(
-                inlineText: 'Ucz się słówek',
-                viewName: 'LearnWords',
-                func: setSelectedView),
+              inlineText: 'Ucz się słówek',
+              viewName: 'LearnWords',
+              func: setSelectedView,
+            ),
             const SizedBox(
               height: 10,
             ),
             MenuButton(
-              inlineText: 'Wyczyść dane (potem Opcje)',
-              func: () => DatabaseHelper.instance.removeAll(),
+              inlineText: 'Opcje',
+              viewName: 'Options',
+              func: setSelectedView,
             ),
             const SizedBox(
               height: 10,
@@ -134,44 +143,6 @@ class MainMenu extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MenuButton extends StatelessWidget {
-  const MenuButton(
-      {super.key, required this.inlineText, this.viewName, required this.func});
-
-  final String inlineText;
-  final String? viewName;
-  final Function func;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
-          width: 4,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(30),
-        ),
-      ),
-      child: TextButton(
-        child: Text(
-          inlineText,
-          style: TextStyle(color: Theme.of(context).colorScheme.surface),
-        ),
-        onPressed: () {
-          if (viewName != null) {
-            func(viewName);
-          } else {
-            func();
-          }
-        },
       ),
     );
   }

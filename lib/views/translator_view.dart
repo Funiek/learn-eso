@@ -55,7 +55,7 @@ class _TranslatorViewState extends State<TranslatorView> {
                 String translatedWord = await translatorController
                     .translateText(textController.text);
                 
-                Fluttertoast.showToast(
+                await Fluttertoast.showToast(
                   msg: translatedWord,
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
