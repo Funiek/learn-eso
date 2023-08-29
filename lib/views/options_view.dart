@@ -29,9 +29,9 @@ class _OptionsViewState extends State<OptionsView> {
           padding: const EdgeInsets.all(24),
           children: <Widget>[
             MenuButton(
-              inlineText: 'Przetłumacz',
+              inlineText: 'Wyczyść słownik',
               func: () async {
-                await DatabaseHelper.instance.removeAll();
+                DatabaseHelper.instance.removeAll();
 
                 await Fluttertoast.showToast(
                   msg: 'Słowa usunięte',
@@ -47,7 +47,7 @@ class _OptionsViewState extends State<OptionsView> {
             ),
             MenuButton(
               inlineText: 'Cofnij',
-              viewName: null,
+              viewName: '',
               func: widget.setSelectedView,
             ),
           ],

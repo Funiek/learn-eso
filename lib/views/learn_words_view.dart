@@ -15,6 +15,12 @@ class LearnWordsView extends StatefulWidget {
 class _LearnWordsViewState extends State<LearnWordsView> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.white,
+        title: const Text('Naucz się słówek'),
+      ),
+    );
   }
 }
