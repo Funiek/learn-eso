@@ -13,6 +13,32 @@ class WordsListView extends StatefulWidget {
 
 class _WordsListViewState extends State<WordsListView> {
   final TextEditingController textController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+  bool fabVisible = true;
+
+  bool reachedEndOfDisplay() {
+    return scrollController.offset >= scrollController.position.maxScrollExtent;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Dodaj listener do kontrolera w metodzie initState
+    scrollController.addListener(
+      () {
+        if (reachedEndOfDisplay()) {
+          setState(() {
+            fabVisible = false;
+          });
+        } else {
+          setState(() {
+            fabVisible = true;
+          });
+        }
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -44,12 +70,12 @@ class _WordsListViewState extends State<WordsListView> {
                       child: Text('Brak fiszek'),
                     )
                   : ListView(
+                      controller: scrollController,
                       children: snapshot.data!.reversed
                           .map(
                             (e) => Center(
                               child: ListTile(
-                                title: Text(
-                                    '${e.original} -> ${e.translated}'),
+                                title: Text('${e.original} -> ${e.translated}'),
                                 trailing: IconButton(
                                   onPressed: () => setState(() {
                                     DatabaseHelper.instance.remove(e.id ?? 0);
@@ -63,11 +89,13 @@ class _WordsListViewState extends State<WordsListView> {
                     );
             }),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => widget.setSelectedView('Translator'),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: const Icon(Icons.translate),
-      ),
+      floatingActionButton: fabVisible
+          ? FloatingActionButton(
+              onPressed: () => widget.setSelectedView('Translator'),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              child: const Icon(Icons.translate),
+            )
+          : Container(),
     );
   }
 }
