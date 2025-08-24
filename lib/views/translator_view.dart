@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:learneso/helpers/database_helper.dart';
 import 'package:learneso/word.dart';
@@ -51,17 +53,26 @@ class _TranslatorViewState extends State<TranslatorView> {
             child: TextButton(
               onPressed: () async {
                 FocusScope.of(context).unfocus();
+                if (!mounted) return;
 
                 String translatedWord = await translatorController
                     .translateText(textController.text);
-                
-                await Fluttertoast.showToast(
-                  msg: translatedWord,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  textColor: Colors.white,
-                  fontSize: 16.0,
-                );
+
+                if (Platform.isAndroid || Platform.isIOS) {
+                  await Fluttertoast.showToast(
+                    msg: translatedWord,
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                }
+                else {
+                  // TODO: do przerobienia - szczegóły w warningu
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(translatedWord)),
+                  );
+                }
 
                 Word word = Word(
                   original: textController.text,
@@ -74,7 +85,7 @@ class _TranslatorViewState extends State<TranslatorView> {
                 });
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   Theme.of(context).colorScheme.secondary,
                 ),
               ),

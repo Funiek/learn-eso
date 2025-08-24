@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:math';
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
@@ -13,7 +12,10 @@ class DatabaseHelper {
   Future<Database> get database async => _database ??= await _initDatabase();
 
   Future<Database> _initDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    Directory documentsDirectory = (Platform.isAndroid || Platform.isIOS || Platform.isMacOS)
+        ? await getApplicationDocumentsDirectory()
+        : await getApplicationSupportDirectory();
+
     String path = join(documentsDirectory.path, 'words.db');
     return await openDatabase(
       path,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'views/options_view.dart';
@@ -7,10 +9,17 @@ import 'views/words_list_view.dart';
 import 'package:google_translator/google_translator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'menu_button.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 Future<void> main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (!Platform.isAndroid && !Platform.isIOS) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   runApp(const MyApp());
 }
 
@@ -26,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   final String googleTranslationApiKey =
       dotenv.env['GOOGLE_TRANSLATION_API_KEY'] ?? '';
 
-  setSelectedView(selectedView) {
+  void setSelectedView(selectedView) {
     setState(() {
       _selectedView = selectedView;
     });
@@ -73,9 +82,8 @@ class _MyAppState extends State<MyApp> {
                 child: OptionsView(setSelectedView: setSelectedView),
               )
           ],
-          onPopPage: (route, result) {
+          onDidRemovePage: (page) {
             setSelectedView(null);
-            return route.didPop(result);
           },
         ),
       ),
