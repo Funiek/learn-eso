@@ -1,4 +1,4 @@
-import 'package:learneso/word.dart';
+import 'package:learneso/models/word.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 import 'package:path/path.dart';

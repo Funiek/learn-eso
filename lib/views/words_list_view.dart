@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:learneso/enums/view_enum.dart';
 import 'package:learneso/helpers/database_helper.dart';
-import 'package:learneso/word.dart';
+import 'package:learneso/models/word.dart';
 
 class WordsListView extends StatefulWidget {
   const WordsListView({super.key, required this.setSelectedView});
@@ -24,7 +25,6 @@ class _WordsListViewState extends State<WordsListView> {
   void initState() {
     super.initState();
 
-    // Dodaj listener do kontrolera w metodzie initState
     scrollController.addListener(
       () {
         if (reachedEndOfDisplay()) {
@@ -91,7 +91,7 @@ class _WordsListViewState extends State<WordsListView> {
       ),
       floatingActionButton: fabVisible
           ? FloatingActionButton(
-              onPressed: () => widget.setSelectedView('Translator'),
+              onPressed: () => widget.setSelectedView(ViewEnum.translator),
               backgroundColor: Theme.of(context).colorScheme.secondary,
               child: const Icon(Icons.translate),
             )

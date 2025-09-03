@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:learneso/enums/view_enum.dart';
 import 'views/options_view.dart';
 import 'package:learneso/views/learn_words_view.dart';
 import 'views/translator_view.dart';
@@ -31,11 +32,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _selectedView;
+  ViewEnum _selectedView = ViewEnum.none;
   final String googleTranslationApiKey =
       dotenv.env['GOOGLE_TRANSLATION_API_KEY'] ?? '';
 
-  void setSelectedView(selectedView) {
+  void setSelectedView(ViewEnum selectedView) {
     setState(() {
       _selectedView = selectedView;
     });
@@ -65,25 +66,25 @@ class _MyAppState extends State<MyApp> {
                 setSelectedView: setSelectedView,
               ),
             ),
-            if (_selectedView == 'Translator')
+            if (_selectedView == ViewEnum.translator)
               MaterialPage(
                 child: TranslatorView(setSelectedView: setSelectedView),
               )
-            else if (_selectedView == 'WordsList')
+            else if (_selectedView == ViewEnum.wordsList)
               MaterialPage(
                 child: WordsListView(setSelectedView: setSelectedView),
               )
-            else if (_selectedView == 'LearnWords')
+            else if (_selectedView == ViewEnum.learnWords)
               MaterialPage(
                 child: LearnWordsView(setSelectedView: setSelectedView),
               )
-            else if (_selectedView == 'Options')
+            else if (_selectedView == ViewEnum.options)
               MaterialPage(
                 child: OptionsView(setSelectedView: setSelectedView),
               )
           ],
           onDidRemovePage: (page) {
-            setSelectedView(null);
+            setSelectedView(ViewEnum.none);
           },
         ),
       ),
@@ -115,7 +116,7 @@ class MainMenu extends StatelessWidget {
           children: <Widget>[
             MenuButton(
               inlineText: 'Przetłumacz',
-              viewName: 'Translator',
+              viewName: ViewEnum.translator,
               func: setSelectedView,
             ),
             const SizedBox(
@@ -123,7 +124,7 @@ class MainMenu extends StatelessWidget {
             ),
             MenuButton(
               inlineText: 'Lista słów',
-              viewName: 'WordsList',
+              viewName: ViewEnum.wordsList,
               func: setSelectedView,
             ),
             const SizedBox(
@@ -131,7 +132,7 @@ class MainMenu extends StatelessWidget {
             ),
             MenuButton(
               inlineText: 'Ucz się słówek',
-              viewName: 'LearnWords',
+              viewName: ViewEnum.learnWords,
               func: setSelectedView,
             ),
             const SizedBox(
@@ -139,7 +140,7 @@ class MainMenu extends StatelessWidget {
             ),
             MenuButton(
               inlineText: 'Opcje',
-              viewName: 'Options',
+              viewName: ViewEnum.options,
               func: setSelectedView,
             ),
             const SizedBox(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learneso/enums/view_enum.dart';
 import 'package:learneso/menu_button.dart';
 import 'package:learneso/helpers/database_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -47,7 +48,7 @@ class _OptionsViewState extends State<OptionsView> {
             ),
             MenuButton(
               inlineText: 'Cofnij',
-              viewName: '',
+              viewName: ViewEnum.none,
               func: widget.setSelectedView,
             ),
           ],

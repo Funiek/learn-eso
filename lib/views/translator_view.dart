@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:learneso/enums/view_enum.dart';
 import 'package:learneso/helpers/database_helper.dart';
-import 'package:learneso/word.dart';
+import 'package:learneso/models/word.dart';
 import 'package:google_translator/google_translator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -66,8 +67,7 @@ class _TranslatorViewState extends State<TranslatorView> {
                     textColor: Colors.white,
                     fontSize: 16.0,
                   );
-                }
-                else {
+                } else {
                   // TODO: do przerobienia - szczegóły w warningu
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(translatedWord)),
@@ -98,7 +98,7 @@ class _TranslatorViewState extends State<TranslatorView> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => widget.setSelectedView('WordsList'),
+        onPressed: () => widget.setSelectedView(ViewEnum.wordsList),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: const Icon(Icons.book_outlined),
       ),

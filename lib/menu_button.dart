@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:learneso/enums/view_enum.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton(
       {super.key, required this.inlineText, this.viewName, required this.func});
 
   final String inlineText;
-  final String? viewName;
+  final ViewEnum? viewName;
   final Function func;
 
   @override
