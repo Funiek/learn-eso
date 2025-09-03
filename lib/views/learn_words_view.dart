@@ -33,7 +33,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
           title: const Text('Naucz się słówek'),
         ),
         body: FutureBuilder(
-            future: WordService.instance.getRandomizedWordsAsync(),
+            future: WordService.instance.getPrioritisedWordsQueueListAsync(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -45,7 +45,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                 return const Center(child: Text('Brak słów'));
               }
 
-              var wordOriginalText = snapshot.data!.first.original;
+              var word = snapshot.data!.removeFirst();
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +59,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                     child: Padding(
                       padding: EdgeInsets.all(24.0),
                       child: Text(
-                        wordOriginalText,
+                        word.translated,
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
@@ -79,6 +79,40 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TextButton(
                       onPressed: () async {
+                        if (textController.text == word.original) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Prawidłowo!')),
+                          );
+
+                          setState(() {
+                            textController.clear();
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Błedna odpowiedź!')),
+                          );
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      child: Text(
+                        'Sprawdź',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.surface),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TextButton(
+                      onPressed: () async {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(word.original)),
+                        );
+
                         setState(() {
                           textController.clear();
                         });
@@ -89,7 +123,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                         ),
                       ),
                       child: Text(
-                        'Sprawdź',
+                        'Pokaż słowo',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.surface),
                       ),
