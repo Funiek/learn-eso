@@ -22,11 +22,21 @@ class WordService {
   Future<ListQueue<Word>> getPrioritisedWordsQueueListAsync() async {
     var words = await getWordsAsync();
 
+    if(words.isNotEmpty) {
+      words.sort((a, b) => a.priority!.compareTo(b.priority!));
+    }
+
     ListQueue<Word> lq = ListQueue();
     for(Word word in words) {
-      lq.addFirst(word);
+      if(word.priority! > 0) {
+        lq.addFirst(word);
+      }
     }
 
     return lq;
+  }
+
+  Future<int> update(Word word) async {
+    return await DatabaseHelper.instance.update(word);
   }
 }

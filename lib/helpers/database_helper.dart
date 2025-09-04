@@ -27,10 +27,13 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
         CREATE TABLE words(
-          id INTEGER PRIMARY KEY,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
           original TEXT,
           translated TEXT,
-          description TEXT
+          description TEXT,
+          priority INTEGER,
+          translate_from TEXT,
+          translate_to TEXT
         )
       ''');
   }

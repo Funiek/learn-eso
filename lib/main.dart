@@ -84,7 +84,6 @@ class _MyAppState extends State<MyApp> {
               )
           ],
           onDidRemovePage: (page) {
-            setSelectedView(ViewEnum.none);
           },
         ),
       ),

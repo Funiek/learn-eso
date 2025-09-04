@@ -77,6 +77,10 @@ class _TranslatorViewState extends State<TranslatorView> {
                 Word word = Word(
                   original: textController.text,
                   translated: translatedWord,
+                  description: 'słowo',
+                  priority: 5,
+                  translateFrom: 'en',
+                  translateTo: 'pl'
                 );
                 await DatabaseHelper.instance.add(word);
 
