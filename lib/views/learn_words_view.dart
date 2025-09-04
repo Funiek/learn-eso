@@ -108,7 +108,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: TextButton(
               onPressed: () async {
                 if (textController.text == word!.original) {
@@ -146,7 +146,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: TextButton(
               onPressed: () async {
                 ScaffoldMessenger.of(context).showSnackBar(
