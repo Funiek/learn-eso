@@ -50,6 +50,8 @@ class _WordsListViewState extends State<WordsListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.white,
         title: const Text('Lista fiszek'),
       ),
       body: Center(

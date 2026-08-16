@@ -43,33 +43,12 @@ class _MyAppState extends State<MyApp> {
       builder: () => MaterialApp(
         title: 'LearnESO',
         theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepOrange,
+            primary: Colors.grey,
+            secondary: Colors.deepOrange,
+          ),
           useMaterial3: true,
-          brightness: Brightness.dark,
-          scaffoldBackgroundColor: const Color(0xFF111111), // Deep Obsidian Void Black
-          colorScheme: const ColorScheme.dark(
-            primary: Color(0xFF8E8E8E), // Akatosh Silver/Stone Grey
-            secondary: Color(0xFFD4AF37), // Elder Scrolls Imperial Gold
-            surface: Color(0xFF1E1E1E), // Dark Slate Menu Background
-            onPrimary: Colors.black,
-            onSecondary: Colors.black,
-          ),
-          cardTheme: const CardThemeData(
-            color: Color(0xFFF5E6CC), // Warm Ancient Parchment Cream
-            surfaceTintColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-              side: BorderSide(
-                color: Color(0xFFC4B18B), // Aged Parchment Edge/Dust Border
-                width: 1.5,
-              ),
-            ),
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFF1E1E1E),
-            foregroundColor: Color(0xFFD4AF37), // Gold Title
-            elevation: 3,
-            centerTitle: true,
-          ),
         ),
         home: Navigator(
           pages: [
@@ -118,6 +97,8 @@ class MainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.white,
         title: Text(title),
       ),
       body: Center(

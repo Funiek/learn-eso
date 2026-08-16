@@ -21,6 +21,8 @@ class _OptionsViewState extends State<OptionsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.white,
         title: const Text('Opcje'),
       ),
       body: Center(
