@@ -31,6 +31,7 @@ class _OptionsViewState extends State<OptionsView> {
           children: <Widget>[
             MenuButton(
               inlineText: 'Wyczyść słownik',
+              icon: Icons.delete_sweep,
               func: () async {
                 DatabaseHelper.instance.removeAll();
 
@@ -44,12 +45,13 @@ class _OptionsViewState extends State<OptionsView> {
               },
             ),
             const SizedBox(
-              height: 10,
+              height: 12,
             ),
             MenuButton(
               inlineText: 'Cofnij',
               viewName: ViewEnum.none,
               func: widget.setSelectedView,
+              icon: Icons.arrow_back,
             ),
           ],
         ),

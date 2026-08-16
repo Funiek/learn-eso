@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../models/word.dart';
 import '../services/word_service.dart';
@@ -23,6 +24,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
   bool isLoading = true;
   String? error;
   Word? word;
+  Color? _feedbackColor;
 
   @override
   void initState() {
@@ -79,95 +81,217 @@ class _LearnWordsViewState extends State<LearnWordsView> {
         foregroundColor: Colors.white,
         title: const Text('Naucz się słówek'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Card(
-            elevation: 10,
-            margin: EdgeInsets.all(16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Text(
-                word!.translated,
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 8, top: 16, right: 8, bottom: 4),
-            child: TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Wpisz słowo do przetłumaczenia',
-              ),
-              controller: textController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: TextButton(
-              onPressed: () async {
-                if (textController.text == word!.original) {
-                  await WordService.instance.registerWordAttemptAsync(word!, true);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Prawidłowo!')),
-                  );
-
-                  setState(() {
-                    textController.clear();
-                    if (words!.isNotEmpty) {
-                      word = words!.removeFirst();
-                    }
-                  });
-                } else {
-                  await WordService.instance.registerWordAttemptAsync(word!, false);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Błedna odpowiedź!')),
-                  );
-                }
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(
-                  Theme.of(context).colorScheme.secondary,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                decoration: BoxDecoration(
+                  color: _feedbackColor ?? Colors.transparent,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: _feedbackColor != null
+                      ? [
+                          BoxShadow(
+                            color: _feedbackColor!.withOpacity(0.4),
+                            blurRadius: 16,
+                            spreadRadius: 3,
+                          )
+                        ]
+                      : [],
+                ),
+                padding: const EdgeInsets.all(6),
+                child: Card(
+                  elevation: 6,
+                  margin: EdgeInsets.zero,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+                    child: Center(
+                      child: Text(
+                        word!.translated,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              child: Text(
-                'Sprawdź',
-                style: TextStyle(color: Theme.of(context).colorScheme.surface),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: TextButton(
-              onPressed: () async {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(word!.original)),
-                );
-
-                setState(() {
-                  textController.clear();
-                });
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(
-                  Theme.of(context).colorScheme.secondary,
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Tłumaczenie',
+                    hintText: 'Wpisz słowo po angielsku',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    prefixIcon: const Icon(Icons.edit),
+                  ),
+                  controller: textController,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => _checkAnswer(),
                 ),
               ),
-              child: Text(
-                'Pokaż słowo',
-                style: TextStyle(color: Theme.of(context).colorScheme.surface),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.green,
+                              Colors.green.shade700,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.green.withOpacity(0.2),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          onPressed: _checkAnswer,
+                          child: const Text(
+                            'Sprawdź',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Odpowiedź: ${word!.original} 💡'),
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                duration: const Duration(milliseconds: 1500),
+                              ),
+                            );
+                            setState(() {
+                              textController.clear();
+                            });
+                          },
+                          child: Text(
+                            'Pokaż słowo',
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  Future<void> _checkAnswer() async {
+    if (_feedbackColor != null) return; // Prevent double taps during animation
+
+    final input = textController.text.trim().toLowerCase();
+    final correct = word!.original.trim().toLowerCase();
+
+    if (input == correct) {
+      // Correct answer feedback
+      setState(() {
+        _feedbackColor = Colors.green;
+      });
+      HapticFeedback.lightImpact();
+
+      await WordService.instance.registerWordAttemptAsync(word!, true);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Prawidłowo! 🎉'),
+          backgroundColor: Colors.green,
+          duration: Duration(milliseconds: 1000),
+        ),
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (!mounted) return;
+      setState(() {
+        _feedbackColor = null;
+        textController.clear();
+        if (words!.isNotEmpty) {
+          word = words!.removeFirst();
+        } else {
+          word = null; // Forces reload of words queue
+        }
+      });
+    } else {
+      // Incorrect answer feedback
+      setState(() {
+        _feedbackColor = Colors.red;
+      });
+      HapticFeedback.vibrate();
+
+      await WordService.instance.registerWordAttemptAsync(word!, false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Błędna odpowiedź! Poprawnie: ${word!.original} ❌'),
+          backgroundColor: Colors.red,
+          duration: const Duration(milliseconds: 1200),
+        ),
+      );
+
+      await Future.delayed(const Duration(milliseconds: 650));
+
+      if (!mounted) return;
+      setState(() {
+        _feedbackColor = null;
+      });
+    }
   }
 }

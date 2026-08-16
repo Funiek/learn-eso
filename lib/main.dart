@@ -109,37 +109,42 @@ class MainMenu extends StatelessWidget {
               inlineText: 'Przetłumacz',
               viewName: ViewEnum.translator,
               func: setSelectedView,
+              icon: Icons.translate,
             ),
             const SizedBox(
-              height: 10,
+              height: 12,
             ),
             MenuButton(
               inlineText: 'Lista słów',
               viewName: ViewEnum.wordsList,
               func: setSelectedView,
+              icon: Icons.list_alt,
             ),
             const SizedBox(
-              height: 10,
+              height: 12,
             ),
             MenuButton(
               inlineText: 'Ucz się słówek',
               viewName: ViewEnum.learnWords,
               func: setSelectedView,
+              icon: Icons.school,
             ),
             const SizedBox(
-              height: 10,
+              height: 12,
             ),
             MenuButton(
               inlineText: 'Opcje',
               viewName: ViewEnum.options,
               func: setSelectedView,
+              icon: Icons.settings,
             ),
             const SizedBox(
-              height: 10,
+              height: 12,
             ),
             MenuButton(
               inlineText: 'Zamknij',
               func: () => SystemNavigator.pop(),
+              icon: Icons.exit_to_app,
             ),
           ],
         ),
