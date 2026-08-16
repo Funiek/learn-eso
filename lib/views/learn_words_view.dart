@@ -77,8 +77,6 @@ class _LearnWordsViewState extends State<LearnWordsView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Colors.white,
         title: const Text('Naucz się słówek'),
       ),
       body: GestureDetector(

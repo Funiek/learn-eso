@@ -31,8 +31,6 @@ class _TranslatorViewState extends State<TranslatorView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Colors.white,
         title: const Text('Translator'),
       ),
       body: Column(
