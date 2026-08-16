@@ -112,8 +112,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
             child: TextButton(
               onPressed: () async {
                 if (textController.text == word!.original) {
-                  word!.priority = (word!.priority ?? 5) - 1;
-                  WordService.instance.update(word!);
+                  await WordService.instance.registerWordAttemptAsync(word!, true);
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Prawidłowo!')),
@@ -126,8 +125,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                     }
                   });
                 } else {
-                  word!.priority = (word!.priority ?? 5) + 1;
-                  WordService.instance.update(word!);
+                  await WordService.instance.registerWordAttemptAsync(word!, false);
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Błedna odpowiedź!')),

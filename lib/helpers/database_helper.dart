@@ -19,8 +19,9 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, 'words.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -33,14 +34,49 @@ class DatabaseHelper {
           description TEXT,
           priority INTEGER,
           translate_from TEXT,
-          translate_to TEXT
+          translate_to TEXT,
+          return_at_count INTEGER DEFAULT 0
         )
       ''');
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute(
+        'ALTER TABLE words ADD COLUMN return_at_count INTEGER DEFAULT 0',
+      );
+    }
   }
 
   Future<List<Word>> getWords() async {
     Database db = await instance.database;
     var words = await db.query('words', orderBy: 'id');
+    List<Word> wordList = words.isNotEmpty
+        ? words
+            .map(
+              (e) => Word.fromJson(e),
+            )
+            .toList()
+        : [];
+
+    return wordList;
+  }
+
+  Future<List<Word>> getPrioritisedWords(int currentAskedCount) async {
+    Database db = await instance.database;
+
+    // Auto-restore words that completed their 100 asked words cooldown back to priority 1
+    await db.rawUpdate(
+      'UPDATE words SET priority = 1, return_at_count = 0 WHERE (priority <= 0 OR priority IS NULL) AND return_at_count > 0 AND return_at_count <= ?',
+      [currentAskedCount],
+    );
+
+    var words = await db.query(
+      'words',
+      where: 'priority > ?',
+      whereArgs: [0],
+      orderBy: 'priority ASC',
+    );
     List<Word> wordList = words.isNotEmpty
         ? words
             .map(
