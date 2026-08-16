@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learneso/enums/view_enum.dart';
@@ -10,16 +8,10 @@ import 'views/words_list_view.dart';
 import 'package:google_translator/google_translator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'menu_button.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 Future<void> main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (!Platform.isAndroid && !Platform.isIOS) {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  }
 
   runApp(const MyApp());
 }
