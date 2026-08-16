@@ -106,9 +106,6 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                 child: Card(
                   elevation: 6,
                   margin: EdgeInsets.zero,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),

@@ -54,8 +54,15 @@ class _MyAppState extends State<MyApp> {
             onSecondary: Colors.black,
           ),
           cardTheme: const CardThemeData(
-            color: Color(0xFF1E1E1E), // Dark Slate Card
+            color: Color(0xFF161616), // Deep Graphite Gray
             surfaceTintColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              side: BorderSide(
+                color: Color(0xFF2C2C2E), // Subtle Metallic Steel Border
+                width: 1,
+              ),
+            ),
           ),
           appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xFF1E1E1E),
