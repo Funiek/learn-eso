@@ -54,13 +54,13 @@ class _MyAppState extends State<MyApp> {
             onSecondary: Colors.black,
           ),
           cardTheme: const CardThemeData(
-            color: Color(0xFF161616), // Deep Graphite Gray
+            color: Color(0xFFF5E6CC), // Warm Ancient Parchment Cream
             surfaceTintColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
               side: BorderSide(
-                color: Color(0xFF2C2C2E), // Subtle Metallic Steel Border
-                width: 1,
+                color: Color(0xFFC4B18B), // Aged Parchment Edge/Dust Border
+                width: 1.5,
               ),
             ),
           ),

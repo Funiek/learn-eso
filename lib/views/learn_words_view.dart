@@ -116,6 +116,7 @@ class _LearnWordsViewState extends State<LearnWordsView> {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.5,
+                          color: Color(0xFF231F1A), // Deep Ink Charcoal for Parchment Contrast
                         ),
                         textAlign: TextAlign.center,
                       ),
